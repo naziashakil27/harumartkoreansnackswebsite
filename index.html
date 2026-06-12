@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Haru Mart | Premium Korean Packaged Food Store</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22 width=%22100%22 height=%22100%22><text y=%220.9em%22 font-size=%2290%22>🍙</text></svg>" />
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            cream: {
+              50: '#FDFBF7',
+              100: '#FAF7F0',
+              200: '#F5ECE1',
+              300: '#EFE1CD',
+            },
+            lavender: {
+              50: '#F4EFFF',
+              100: '#E8DCFC',
+              200: '#D5C3F9',
+              300: '#C2A9F5',
+            },
+            blush: {
+              50: '#FFF5F6',
+              100: '#FADADD',
+              200: '#F5BAC1',
+              300: '#EFA0A9',
+            },
+            pastelPurp: {
+              50: '#FAF8FF',
+              100: '#F1ECFF',
+              200: '#D6C7FF',
+              300: '#BFA8FF',
+            },
+            pastelYellow: {
+              50: '#FFFDF5',
+              100: '#FFEFC2',
+              200: '#FFE191',
+            },
+            pastelGreen: {
+              50: '#F6FCFA',
+              100: '#E2F3F0',
+              200: '#C1E6DF',
+            },
+            charcoal: {
+              800: '#2D2D2D',
+              900: '#1F1F1F',
+            }
+          },
+          fontFamily: {
+            outfit: ['Outfit', 'Poppins', 'sans-serif'],
+            poppins: ['Poppins', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- GSAP CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+  <!-- React & ReactDOM CDN -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+
+  <!-- Babel CDN for JSX compile -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <style>
+    body {
+      background-color: #FAF7F0;
+      color: #2D2D2D;
+      font-family: 'Outfit', sans-serif;
+      overflow-x: hidden;
+    }
+    
+    .dark body {
+      background-color: #1F1F1F;
+      color: #FAF7F0;
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #FAF7F0;
+    }
+    .dark ::-webkit-scrollbar-track {
+      background: #1F1F1F;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #D5C3F9;
+      border-radius: 9999px;
+      border: 2px solid #FAF7F0;
+    }
+    .dark ::-webkit-scrollbar-thumb {
+      background: #C2A9F5;
+      border: 2px solid #1F1F1F;
+    }
+
+    /* Glassmorphism */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 10px 30px -10px rgba(213, 195, 249, 0.15);
+    }
+    .dark .glass-card {
+      background: rgba(31, 31, 31, 0.65);
+      border: 1px solid rgba(45, 45, 45, 0.4);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    .glass-navbar {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .dark .glass-navbar {
+      background: rgba(31, 31, 31, 0.65);
+      border-bottom: 1px solid rgba(45, 45, 45, 0.4);
+    }
+
+    /* Custom cursor dot and trailing ring */
+    .cursor-dot {
+      pointer-events: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      z-index: 99999;
+      background-color: #D5C3F9;
+      transform: translate(-50%, -50%);
+    }
+    .cursor-ring {
+      pointer-events: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      z-index: 99998;
+      border: 1.5px solid #C2A9F5;
+      transform: translate(-50%, -50%);
+    }
+
+    .pulse-badge {
+      box-shadow: 0 0 0 0 rgba(245, 186, 193, 0.7);
+      animation: pulse-ring 2s infinite;
+    }
+    @keyframes pulse-ring {
+      0% { box-shadow: 0 0 0 0 rgba(245, 186, 193, 0.7); }
+      70% { box-shadow: 0 0 0 6px rgba(245, 186, 193, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(245, 186, 193, 0); }
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(1rem); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-lavender-200 selection:text-charcoal-900 transition-colors duration-300">
+
+  <div id="root"></div>
+
+  <!-- Standalone React script -->
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+
+    // Hardcode Korean snacks inventory data (using relative paths for standard local running)
+    const PRODUCTS = [
+      {
+        id: 1,
+        title: "Shin Ramyun Spicy Gourmet Ramen",
+        price: 4.99,
+        description: "The absolute standard of Korean instant noodles. Perfectly chewy noodles combined with a spicy, rich beef broth infused with aromatic mushrooms and garlic. Perfect for a quick comforting meal, anytime, anywhere. Experience the authentic taste of Korea's most beloved ramyun.",
+        category: "Noodles",
+        image: "./public/images/shin_ramyun.png",
+        rating: { rate: 4.8, count: 245 },
+        badge: "Best Seller",
+        flavors: ["Original", "Super Spicy 🔥", "Black Beef Broth"],
+        sizes: ["Single Pack", "4-Pack Bundle ($16.99)", "Bowl Cup"],
+        ingredients: "Wheat flour, palm oil, potato starch, beef bone extract, red chili pepper, shiitake mushroom, garlic.",
+        calories: "510 kcal per serving",
+      },
+      {
+        id: 2,
+        title: "Honey Butter Potato Chips",
+        price: 3.49,
+        description: "The legendary snack that took the world by storm and created a nationwide shortage in Korea. Crispy, thin potato chips perfectly glazed with rich French butter and sweet acacia honey. It's the ultimate sweet and savory crunch combination that keeps you coming back for more.",
+        category: "Snacks",
+        image: "./public/images/honey_butter_chips.png",
+        rating: { rate: 4.9, count: 312 },
+        badge: "Trending",
+        flavors: ["Original Butter", "Cherry Blossom Special"],
+        sizes: ["Regular (60g)", "Sharing Size (120g)"],
+        ingredients: "Potato, palm oil, honey butter seasoning, acacia honey, French gourmet butter.",
+        calories: "345 kcal per serving",
+      },
+      {
+        id: 3,
+        title: "Binggrae Banana Flavored Milk",
+        price: 2.49,
+        description: "A nostalgic staple in every Korean household since 1974. Packaged in its iconic jar-shaped bottle, this creamy milk drink combines premium dairy with the sweet, smooth essence of ripe bananas. Sweet, comforting, and incredibly refreshing, especially after a spicy meal.",
+        category: "Drinks",
+        image: "./public/images/banana_milk.png",
+        rating: { rate: 4.7, count: 189 },
+        badge: "Popular",
+        flavors: ["Banana", "Strawberry", "Melon", "Peach"],
+        sizes: ["Single Bottle (240ml)", "4-Pack Bundle ($8.99)"],
+        ingredients: "Milk, sugar, banana juice concentrate, artificial flavors, carotene.",
+        calories: "210 kcal per serving",
+      },
+      {
+        id: 4,
+        title: "Bibigo Premium Canned Cabbage Kimchi",
+        price: 6.99,
+        description: "Taste the absolute freshness of traditional Korean fermented Napa cabbage kimchi in a convenient, travel-friendly, odor-proof can. Made with seasonal cabbage, high-quality chili flakes (gochugaru), ginger, and garlic. Perfectly fermented to deliver that classic tangy, probiotic crunch.",
+        category: "Pantry",
+        image: "./public/images/canned_kimchi.png",
+        rating: { rate: 4.6, count: 98 },
+        badge: "Organic",
+        flavors: ["Original Tangy", "Stir-Fried Kimchi"],
+        sizes: ["Can (160g)", "Double Can Pack"],
+        ingredients: "Napa cabbage, radish, red pepper powder, garlic, ginger, anchovy sauce, salt.",
+        calories: "35 kcal per serving",
+      },
+      {
+        id: 5,
+        title: "Lotte Almond Pepero Sticks",
+        price: 1.99,
+        description: "Korea's ultimate sharing snack! Crispy, toasted biscuit sticks dipped in premium milk chocolate and generously rolled in roasted crushed almonds for a satisfying nutty crunch. A fun, delicious snack that is the focus of Korea's national Pepero Day on November 11th.",
+        category: "Snacks",
+        image: "./public/images/pepero_almond.png",
+        rating: { rate: 4.8, count: 420 },
+        badge: "Best Seller",
+        flavors: ["Almond & Chocolate", "Original Chocolate", "White Cookie & Cream"],
+        sizes: ["Standard Box (37g)", "Family Multipack"],
+        ingredients: "Wheat flour, almond, sugar, cocoa mass, whole milk powder, palm oil.",
+        calories: "202 kcal per serving",
+      },
+      {
+        id: 6,
+        title: "Yopokki Sweet & Spicy Tteokbokki",
+        price: 5.49,
+        description: "Enjoy Korea's favorite street food in just 3 minutes! Chewy, cylindrical rice cakes paired with a mouthwatering sweet and mildly spicy chili sauce (Gochujang). Fast, delicious, and brings the authentic flavor of Seoul's street food stalls right to your table.",
+        category: "Ready Meals",
+        image: "./public/images/tteokbokki_cup.png",
+        rating: { rate: 4.5, count: 156 },
+        badge: "Spicy 🔥",
+        flavors: ["Sweet & Spicy", "Cheese Tteokbokki", "Jajang (Black Bean)", "Hot & Spicy 🔥🔥"],
+        sizes: ["Instant Cup (140g)", "Double Pack bag"],
+        ingredients: "Rice cake (rice, salt, citric acid), tomato ketchup, gochujang, sugar, red pepper powder.",
+        calories: "320 kcal per serving",
+      },
+      {
+        id: 7,
+        title: "Orion Original Choco Pie",
+        price: 3.99,
+        description: "An iconic snack cake composed of two layers of soft, airy biscuit cake separated by a fluffy, elastic marshmallow filling, all enveloped in a rich, smooth chocolate coating. A legendary confectionery treat that is cherished by generations across Korea and the globe.",
+        category: "Snacks",
+        image: "./public/images/choco_pie.png",
+        rating: { rate: 4.7, count: 278 },
+        badge: "Classic",
+        flavors: ["Original", "Banana Cream", "Matcha Green Tea"],
+        sizes: ["Box of 6 ($3.99)", "Box of 12 ($6.99)"],
+        ingredients: "Wheat flour, sugar, corn syrup, vegetable shortening, cocoa powder, gelatin, milk.",
+        calories: "171 kcal per pie",
+      },
+      {
+        id: 8,
+        title: "Lotte Milkis Yogurt Soda",
+        price: 2.19,
+        description: "A unique, deliciously refreshing carbonated milk beverage that merges the fizz of soda with the creamy, sweet finish of yogurt milk. Soft, sweet, and lightly fizzy, Milkis is a delightful thirst quencher that pairs beautifully with spicy dishes or street food.",
+        category: "Drinks",
+        image: "./public/images/milkis.png",
+        rating: { rate: 4.8, count: 145 },
+        badge: "New Flavor",
+        flavors: ["Original Yogurt", "Melon Milkis", "Strawberry Milkis"],
+        sizes: ["Can (250ml)", "Can 6-Pack ($11.99)"],
+        ingredients: "Carbonated water, corn syrup, skimmed milk, yogurt powder, citric acid.",
+        calories: "130 kcal per can",
+      }
+    ];
+
+    function App() {
+      // Current View state: 'home' | 'market' | 'cart'
+      const [view, setView] = useState('home');
+      const [selectedProductId, setSelectedProductId] = useState(null);
+
+      // Cart/Wishlist states
+      const [cart, setCart] = useState([]);
+      const [wishlist, setWishlist] = useState([]);
+      
+      // Filter states
+      const [searchQuery, setSearchQuery] = useState('');
+      const [selectedCategory, setSelectedCategory] = useState('All');
+      const [maxPrice, setMaxPrice] = useState(15);
+      const [minRating, setMinRating] = useState(0);
+      const [sortBy, setSortBy] = useState('featured');
+      const [wishlistOnly, setWishlistOnly] = useState(false);
+
+      // UI configurations
+      const [cartOpen, setCartOpen] = useState(false);
+      const [darkMode, setDarkMode] = useState(false);
+      const [toasts, setToasts] = useState([]);
+      const [loaded, setLoaded] = useState(false);
+
+      // Product detail choices
+      const [detailQty, setDetailQty] = useState(1);
+      const [detailFlavor, setDetailFlavor] = useState('');
+      const [detailSize, setDetailSize] = useState('');
+      const [detailTab, setDetailTab] = useState('ingredients');
+
+      // Summary coupon code support
+      const [promoInput, setPromoInput] = useState('');
+      const [discount, setDiscount] = useState(0);
+
+      // Ref triggers for animation
+      const cursorDotRef = useRef(null);
+      const cursorRingRef = useRef(null);
+
+      // Custom desktop cursor triggers
+      useEffect(() => {
+        const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        if (isTouch) return;
+
+        const xToDot = gsap.quickTo(cursorDotRef.current, 'x', { duration: 0.1, ease: 'power3' });
+        const yToDot = gsap.quickTo(cursorDotRef.current, 'y', { duration: 0.1, ease: 'power3' });
+        const xToRing = gsap.quickTo(cursorRingRef.current, 'x', { duration: 0.35, ease: 'power3' });
+        const yToRing = gsap.quickTo(cursorRingRef.current, 'y', { duration: 0.35, ease: 'power3' });
+
+        const handleMove = (e) => {
+          xToDot(e.clientX);
+          yToDot(e.clientY);
+          xToRing(e.clientX);
+          yToRing(e.clientY);
+        };
+
+        const handleHover = (e) => {
+          const t = e.target;
+          if (t.tagName === 'A' || t.tagName === 'BUTTON' || t.closest('a') || t.closest('button') || t.closest('select') || t.closest('input')) {
+            gsap.to(cursorRingRef.current, { scale: 1.5, backgroundColor: 'rgba(213, 195, 249, 0.15)', duration: 0.25 });
+            gsap.to(cursorDotRef.current, { scale: 0.5, duration: 0.25 });
+          }
+        };
+
+        const handleOut = (e) => {
+          const t = e.target;
+          if (t.tagName === 'A' || t.tagName === 'BUTTON' || t.closest('a') || t.closest('button') || t.closest('select') || t.closest('input')) {
+            gsap.to(cursorRingRef.current, { scale: 1, backgroundColor: 'transparent', duration: 0.25 });
+            gsap.to(cursorDotRef.current, { scale: 1, duration: 0.25 });
+          }
+        };
+
+        window.addEventListener('mousemove', handleMove);
+        window.addEventListener('mouseover', handleHover);
+        window.addEventListener('mouseout', handleOut);
+        return () => {
+          window.removeEventListener('mousemove', handleMove);
+          window.removeEventListener('mouseover', handleHover);
+          window.removeEventListener('mouseout', handleOut);
+        };
+      }, []);
+
+      // Loaders Session Intro Trigger
+      useEffect(() => {
+        const hasLoaded = sessionStorage.getItem('loaded_haru_demo');
+        if (hasLoaded) {
+          setLoaded(true);
+          return;
+        }
+
+        const tl = gsap.timeline({
+          onComplete: () => {
+            sessionStorage.setItem('loaded_haru_demo', 'true');
+            setLoaded(true);
+          }
+        });
+
+        tl.fromTo('.loader-logo', { scale: 0, opacity: 0, rotate: -30 }, { scale: 1.2, opacity: 1, rotate: 0, duration: 0.7, ease: 'back.out' })
+          .fromTo('.loader-title', { y: 15, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4 }, '-=0.2')
+          .to({}, { duration: 0.5 })
+          .to('.loader-container', { y: '-100%', duration: 0.7, ease: 'power3.inOut' });
+      }, []);
+
+      // Hero Entry animation triggers when load completes
+      useEffect(() => {
+        if (loaded && view === 'home') {
+          const tl = gsap.timeline();
+          tl.fromTo('.hero-text-item', { y: 35, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.12, duration: 0.7, ease: 'power2.out' })
+            .fromTo('.hero-banner-visual', { scale: 0.9, opacity: 0, y: 15 }, { scale: 1, opacity: 1, y: 0, duration: 0.8 }, '-=0.5');
+
+          gsap.to('.hero-banner-visual', { y: -10, duration: 2.5, yoyo: true, repeat: -1, ease: 'sine.inOut' });
+        }
+      }, [loaded, view]);
+
+      // Route layout changes back to top
+      useEffect(() => {
+        window.scrollTo(0, 0);
+      }, [view, selectedProductId]);
+
+      // Toast feedback helper
+      const triggerToast = (msg, type = 'success') => {
+        const id = Date.now();
+        setToasts(prev => [...prev, { id, msg, type }]);
+        setTimeout(() => {
+          setToasts(prev => prev.filter(t => t.id !== id));
+        }, 3000);
+      };
+
+      // Add to shopping cart context
+      const addToCart = (product, qty = 1, sz = '', flav = '') => {
+        const itemFlavor = flav || (product.flavors ? product.flavors[0] : 'Original');
+        const itemSize = sz || (product.sizes ? product.sizes[0] : 'Standard');
+        
+        setCart(prev => {
+          const matchIdx = prev.findIndex(item => item.id === product.id && item.selectedFlavor === itemFlavor && item.selectedSize === itemSize);
+          if (matchIdx > -1) {
+            const updated = [...prev];
+            updated[matchIdx].quantity += qty;
+            triggerToast(`Updated quantity for ${product.title}!`, 'info');
+            return updated;
+          } else {
+            triggerToast(`Added ${product.title} to shopping basket!`);
+            return [...prev, { ...product, quantity: qty, selectedFlavor: itemFlavor, selectedSize: itemSize }];
+          }
+        });
+
+        // Bounce nav cart pill
+        gsap.fromTo('.cart-bubble-node', { scale: 0.7 }, { scale: 1.25, duration: 0.25, yoyo: true, repeat: 1 });
+        
+        setTimeout(() => setCartOpen(true), 350);
+      };
+
+      const removeFromCart = (id, sz, flav) => {
+        setCart(prev => prev.filter(item => !(item.id === id && item.selectedSize === sz && item.selectedFlavor === flav)));
+        triggerToast('Item removed from basket.', 'info');
+      };
+
+      const updateCartQty = (id, sz, flav, qty) => {
+        if (qty < 1) return;
+        setCart(prev => prev.map(item => (item.id === id && item.selectedSize === sz && item.selectedFlavor === flav) ? { ...item, quantity: qty } : item));
+      };
+
+      // Favorite toggle
+      const toggleFav = (product) => {
+        const isFav = wishlist.some(i => i.id === product.id);
+        if (isFav) {
+          setWishlist(prev => prev.filter(i => i.id !== product.id));
+          triggerToast(`Removed ${product.title} from favorites.`, 'info');
+        } else {
+          setWishlist(prev => [...prev, product]);
+          triggerToast(`Saved ${product.title} to favorites! 💖`);
+        }
+      };
+
+      // Coupon application
+      const applyCoupon = (e) => {
+        e.preventDefault();
+        if (promoInput.trim().toUpperCase() === 'KFOOD10') {
+          setDiscount(10);
+          triggerToast('🎉 10% coupon code applied successfully!');
+          setPromoInput('');
+        } else {
+          triggerToast('❌ Invalid coupon code. Use KFOOD10', 'error');
+        }
+      };
+
+      // Theme toggle
+      const toggleTheme = () => {
+        setDarkMode(!darkMode);
+        if (!darkMode) {
+          document.documentElement.classList.add('dark');
+        } else {
+          document.documentElement.classList.remove('dark');
+        }
+      };
+
+      // Calculation summary variables
+      const cartItemCount = cart.reduce((acc, item) => acc + item.quantity, 0);
+      const subtotal = cart.reduce((acc, item) => acc + (item.price * item.quantity), 0);
+      const isFreeShipping = subtotal >= 30.00;
+      const shippingProgress = Math.min((subtotal / 30.00) * 100, 100);
+      const shippingCost = isFreeShipping ? 0.00 : 3.99;
+      const discountAmount = (subtotal * discount) / 100;
+      const totalAmount = subtotal - discountAmount + shippingCost;
+
+      const handleCheckout = () => {
+        triggerToast("🎉 Order placed successfully! (Demo Checkout Completed) 🚀");
+        setCart([]);
+        setDiscount(0);
+        setView('home');
+      };
+
+      // Product filtered array
+      const filteredProducts = PRODUCTS.filter((p) => {
+        const matchesSearch = p.title.toLowerCase().includes(searchQuery.toLowerCase());
+        const matchesCategory = selectedCategory === 'All' || p.category === selectedCategory;
+        const matchesPrice = p.price <= maxPrice;
+        const matchesRating = p.rating.rate >= minRating;
+        const matchesWish = !wishlistOnly || wishlist.some(i => i.id === p.id);
+        return matchesSearch && matchesCategory && matchesPrice && matchesRating && matchesWish;
+      }).sort((a, b) => {
+        if (sortBy === 'price-asc') return a.price - b.price;
+        if (sortBy === 'price-desc') return b.price - a.price;
+        if (sortBy === 'rating') return b.rating.rate - a.rating.rate;
+        if (sortBy === 'newest') return b.id - a.id;
+        return 0;
+      });
+
+      const selectedProduct = PRODUCTS.find(p => p.id === selectedProductId);
+
+      return (
+        <div className={`min-h-screen bg-cream-100 dark:bg-charcoal-900 text-charcoal-800 dark:text-cream-50 transition-colors duration-300`}>
+          
+          {/* Custom Trailing Cursors */}
+          <div ref={cursorDotRef} className="cursor-dot hidden md:block" />
+          <div ref={cursorRingRef} className="cursor-ring hidden md:block" />
+
+          {/* Loader intro (Only rendered if loaded is false) */}
+          {!loaded && (
+            <div className="loader-container fixed inset-0 z-[99999] bg-cream-50 dark:bg-charcoal-900 flex flex-col items-center justify-center">
+              <div className="flex flex-col items-center text-center space-y-4">
+                <div className="loader-logo w-24 h-24 bg-lavender-100 dark:bg-charcoal-800 rounded-[32px] flex items-center justify-center text-5xl border border-white/60">
+                  🍙
+                </div>
+                <div className="loader-title space-y-1.5">
+                  <h1 className="font-poppins font-black text-2xl tracking-wide flex items-center justify-center gap-1.5">
+                    Haru Mart <span className="text-pink-400">✦</span>
+                  </h1>
+                  <p className="font-outfit text-[11px] uppercase tracking-widest text-gray-400">Korean Packaged Delights</p>
+                </div>
+                <div className="w-32 h-0.5 bg-lavender-200" />
+              </div>
+            </div>
+          )}
+
+          {/* Header Navbar */}
+          <nav className="fixed top-0 left-0 w-full z-40 glass-navbar">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex justify-between items-center h-20">
+                <button onClick={() => { setView('home'); setSelectedProductId(null); }} className="flex items-center space-x-2 text-2xl font-poppins font-extrabold tracking-wide">
+                  <span className="bg-lavender-200 dark:bg-lavender-300 text-charcoal-900 px-2.5 py-1 rounded-2xl flex items-center gap-1">
+                    하루 <span className="text-pink-500 animate-pulse text-sm">✦</span>
+                  </span>
+                  <span className="text-xl font-medium tracking-tight">Haru Mart</span>
+                </button>
+
+                <div className="hidden md:flex items-center space-x-8 text-sm uppercase tracking-wider font-semibold font-poppins">
+                  <button onClick={() => { setView('home'); setSelectedProductId(null); }} className={`hover:text-lavender-300 transition-colors ${view === 'home' ? 'text-lavender-300' : ''}`}>Home</button>
+                  <button onClick={() => { setView('market'); setWishlistOnly(false); setSelectedProductId(null); }} className={`hover:text-lavender-300 transition-colors ${view === 'market' && !wishlistOnly ? 'text-lavender-300' : ''}`}>Market</button>
+                  <button onClick={() => { setView('market'); setWishlistOnly(true); setSelectedProductId(null); }} className={`hover:text-lavender-300 transition-colors ${view === 'market' && wishlistOnly ? 'text-lavender-300' : ''}`}>Saved Shelf</button>
+                  <button onClick={() => { setView('cart'); setSelectedProductId(null); }} className={`hover:text-lavender-300 transition-colors ${view === 'cart' ? 'text-lavender-300' : ''}`}>Checkout</button>
+                </div>
+
+                <div className="flex items-center space-x-4">
+                  <button onClick={toggleTheme} className="p-2.5 rounded-full hover:bg-cream-200 dark:hover:bg-charcoal-800 transition-all">
+                    {darkMode ? <i data-lucide="sun" className="w-5 h-5">☀️</i> : <i data-lucide="moon" className="w-5 h-5">🌙</i>}
+                  </button>
+
+                  <button onClick={() => { setView('market'); setWishlistOnly(true); }} className="p-2.5 rounded-full hover:bg-cream-200 dark:hover:bg-charcoal-800 relative">
+                    <span>❤️</span>
+                    {wishlist.length > 0 && (
+                      <span className="absolute top-1 right-1 w-4 h-4 bg-blush-200 text-charcoal-900 font-bold text-[9px] rounded-full flex items-center justify-center border border-white">
+                        {wishlist.length}
+                      </span>
+                    )}
+                  </button>
+
+                  <button onClick={() => setCartOpen(true)} className="p-2.5 rounded-full hover:bg-cream-200 dark:hover:bg-charcoal-800 relative">
+                    <span>👜</span>
+                    {cartItemCount > 0 && (
+                      <span className="cart-bubble-node absolute top-1 right-1 w-4.5 h-4.5 bg-lavender-200 text-charcoal-900 font-bold text-[9px] rounded-full flex items-center justify-center border border-white">
+                        {cartItemCount}
+                      </span>
+                    )}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </nav>
+
+          {/* MAIN PAGE CONTENTS ROUTING */}
+          <main className="pt-24 min-h-[calc(100vh-280px)]">
+            
+            {/* A. LANDING HOME PAGE */}
+            {view === 'home' && !selectedProductId && (
+              <div className="space-y-24 pb-20">
+                {/* Hero Banner Section */}
+                <section className="relative overflow-hidden pt-8 pb-12 sm:pb-20">
+                  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                      <div className="space-y-6 text-center lg:text-left">
+                        <span className="inline-flex items-center gap-1 px-4 py-1.5 rounded-full bg-lavender-200 text-charcoal-900 text-xs font-bold font-poppins uppercase tracking-wider shadow-sm">
+                          ✦ Korean Convenience Delights
+                        </span>
+                        <h1 className="hero-text-item font-poppins font-black text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-[1.1]">
+                          <span>Taste the Joy of</span>
+                          <span className="block text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 py-1">
+                            K-Packaged Food
+                          </span>
+                          <span>Delivered Daily.</span>
+                        </h1>
+                        <p className="hero-text-item text-gray-400 dark:text-gray-300 max-w-xl mx-auto lg:mx-0 leading-relaxed text-sm font-medium">
+                          Experience trending sweet snacks, spicy instant cup ramens, yogurt carbonated sodas, and classic cookies curated directly from Seoul.
+                        </p>
+                        <div className="hero-text-item flex flex-col sm:flex-row gap-4 items-center justify-center lg:justify-start">
+                          <button onClick={() => setView('market')} className="w-full sm:w-auto px-8 py-4 bg-lavender-200 hover:bg-lavender-300 text-charcoal-900 font-bold font-poppins text-xs uppercase tracking-wider rounded-2xl shadow-lg transition-all">
+                            Browse Market
+                          </button>
+                          <button onClick={() => { setView('market'); setSortBy('rating'); }} className="w-full sm:w-auto px-8 py-4 border border-cream-300 dark:border-charcoal-800 hover:bg-cream-200/50 text-charcoal-800 dark:text-cream-100 font-bold font-poppins text-xs uppercase tracking-wider rounded-2xl transition-all">
+                            Popular Snacks →
+                          </button>
+                        </div>
+                      </div>
+                      <div className="flex justify-center items-center">
+                        <img 
+                          src="./public/images/hero_food_collage.png" 
+                          alt="Collage Packshots" 
+                          className="hero-banner-visual w-full max-w-[420px] aspect-square object-contain"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+                {/* Features Row */}
+                <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+                  <div className="glass-card p-8 rounded-3xl flex items-start gap-4">
+                    <span className="text-3xl">🔥</span>
+                    <div>
+                      <h3 className="font-poppins font-bold text-sm">Trending Curations</h3>
+                      <p className="text-xs text-gray-400 mt-1 leading-relaxed">Direct access to trending items that go viral on Mukbang streams.</p>
+                    </div>
+                  </div>
+                  <div className="glass-card p-8 rounded-3xl flex items-start gap-4">
+                    <span className="text-3xl">🚚</span>
+                    <div>
+                      <h3 className="font-poppins font-bold text-sm">Free Express Shipping</h3>
+                      <p className="text-xs text-gray-400 mt-1 leading-relaxed">Free delivery on orders above $30. Packaged with heat-proof protective bubble envelopes.</p>
+                    </div>
+                  </div>
+                  <div className="glass-card p-8 rounded-3xl flex items-start gap-4">
+                    <span className="text-3xl">🍙</span>
+                    <div>
+                      <h3 className="font-poppins font-bold text-sm">100% Import Guarantee</h3>
+                      <p className="text-xs text-gray-400 mt-1 leading-relaxed">Sourced directly from verified packaged brands in Korea with fresh expiration dates.</p>
+                    </div>
+                  </div>
+                </section>
+
+                {/* Featured Products Showcase */}
+                <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                  <div className="flex justify-between items-center mb-10">
+                    <div>
+                      <h2 className="font-poppins font-black text-2xl tracking-tight flex items-center gap-1.5">
+                        Featured Packaged Picks <span className="text-pink-500">✦</span>
+                      </h2>
+                      <p className="text-xs text-gray-400 mt-1 font-semibold uppercase tracking-widest">Top picks of the week</p>
+                    </div>
+                    <button onClick={() => setView('market')} className="px-5 py-2.5 border border-cream-300 dark:border-charcoal-800 rounded-2xl hover:border-lavender-200 text-xs font-bold uppercase font-poppins transition-all">
+                      See All →
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {PRODUCTS.slice(0, 4).map((p) => (
+                      <ProductCardItem key={p.id} product={p} onSelect={setSelectedProductId} onAdd={addToCart} onFav={toggleFav} wishlist={wishlist} />
+                    ))}
+                  </div>
+                </section>
+              </div>
+            )}
+
+            {/* B. CATALOG MARKET CATALOG PAGE */}
+            {view === 'market' && !selectedProductId && (
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+                <div className="flex flex-col md:flex-row justify-between items-center gap-4 pb-6 border-b border-cream-200 dark:border-charcoal-800">
+                  <div>
+                    <h1 className="font-poppins font-black text-3xl tracking-tight">Haru Convenience Store</h1>
+                    <p className="text-xs text-gray-400 mt-1 uppercase tracking-widest font-semibold">
+                      {wishlistOnly ? 'Your Curated Saved Shelf' : 'Authentic sweet & spicy convenience treats'}
+                    </p>
+                  </div>
+                  <button 
+                    onClick={() => setWishlistOnly(!wishlistOnly)}
+                    className={`px-5 py-2.5 rounded-2xl flex items-center gap-1.5 font-poppins font-bold text-xs uppercase tracking-wider transition-all border ${
+                      wishlistOnly ? 'bg-blush-100 border-blush-200 text-charcoal-900' : 'bg-white/70 dark:bg-charcoal-800 border-cream-200 text-charcoal-800 dark:text-cream-100'
+                    }`}
+                  >
+                    <span>❤️</span> Saved Shelf ({wishlist.length})
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                  {/* Filters sidebar */}
+                  <aside className="space-y-6">
+                    <div className="glass-card p-6 rounded-3xl space-y-6">
+                      <div className="flex items-center justify-between pb-3 border-b border-cream-200 dark:border-charcoal-800">
+                        <h2 className="font-poppins font-bold text-sm">Filters Shelf</h2>
+                        <button onClick={() => { setSearchQuery(''); setSelectedCategory('All'); setMaxPrice(15); setMinRating(0); setSortBy('featured'); setWishlistOnly(false); }} className="text-[10px] font-bold font-poppins text-lavender-300 uppercase tracking-widest">Reset All</button>
+                      </div>
+
+                      {/* Category */}
+                      <div className="space-y-3.5">
+                        <h3 className="font-poppins font-semibold text-xs uppercase tracking-wider text-gray-400">Aisle Category</h3>
+                        <div className="flex flex-col space-y-1">
+                          {["All", "Noodles", "Snacks", "Drinks", "Pantry", "Ready Meals"].map((cat) => (
+                            <button
+                              key={cat}
+                              onClick={() => setSelectedCategory(cat)}
+                              className={`px-3 py-1.5 rounded-xl text-left text-xs font-semibold font-poppins transition-colors ${
+                                selectedCategory === cat ? 'bg-lavender-100 text-charcoal-900 font-bold' : 'text-gray-400 hover:bg-cream-100/50'
+                              }`}
+                            >
+                              {cat}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Price Range */}
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-center text-xs font-semibold text-gray-400 uppercase tracking-wider">
+                          <span>Max Price</span>
+                          <span className="font-outfit font-extrabold text-sm text-lavender-300">${maxPrice.toFixed(2)}</span>
+                        </div>
+                        <input 
+                          type="range" min="1" max="15" step="0.5" value={maxPrice} onChange={(e) => setMaxPrice(parseFloat(e.target.value))}
+                          className="w-full h-1.5 bg-cream-200 dark:bg-charcoal-800 rounded-lg appearance-none cursor-pointer accent-lavender-200"
+                        />
+                      </div>
+
+                      {/* Rating */}
+                      <div className="space-y-3.5">
+                        <h3 className="font-poppins font-semibold text-xs uppercase tracking-wider text-gray-400">Minimum Rating</h3>
+                        <div className="flex space-x-1">
+                          {[0, 4.5, 4.6, 4.7, 4.8].map((rate) => (
+                            <button
+                              key={rate} onClick={() => setMinRating(rate)}
+                              className={`w-9 h-9 rounded-xl flex items-center justify-center text-xs font-bold font-poppins border transition-colors ${
+                                minRating === rate ? 'bg-lavender-100 border-lavender-200 text-charcoal-900' : 'bg-white dark:bg-charcoal-850 border-cream-200 text-gray-400'
+                              }`}
+                            >
+                              {rate === 0 ? 'All' : `${rate}★`}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </aside>
+
+                  {/* Catalog Cards Grid */}
+                  <div className="lg:col-span-3 space-y-6">
+                    <div className="flex flex-col sm:flex-row gap-4 justify-between items-center">
+                      <div className="relative w-full sm:max-w-md">
+                        <input 
+                          type="text" placeholder="Search snacks by name..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
+                          className="w-full pl-6 pr-4 py-3 bg-white/60 dark:bg-charcoal-900/40 border border-white/40 dark:border-charcoal-800/60 rounded-2xl text-sm focus:outline-none focus:border-lavender-200 transition-colors"
+                        />
+                      </div>
+                      <div className="relative inline-flex items-center bg-white/60 dark:bg-charcoal-900/40 border border-white/40 dark:border-charcoal-800/60 rounded-2xl px-3 py-3 w-full sm:w-48">
+                        <select 
+                          value={sortBy} onChange={(e) => setSortBy(e.target.value)}
+                          className="bg-transparent text-xs font-bold font-poppins text-charcoal-800 dark:text-cream-100 focus:outline-none w-full cursor-pointer"
+                        >
+                          <option value="featured">Sort by: Featured</option>
+                          <option value="price-asc">Price: Low to High</option>
+                          <option value="price-desc">Price: High to Low</option>
+                          <option value="rating">Rating: Highest</option>
+                          <option value="newest">Aisle: Newest</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    {filteredProducts.length === 0 ? (
+                      <div className="flex flex-col items-center justify-center py-20 text-center space-y-4">
+                        <span className="text-5xl">🔎</span>
+                        <div>
+                          <h3 className="font-poppins font-bold">No treats match your filters</h3>
+                          <p className="text-xs text-gray-400 mt-1 max-w-[250px]">Try lowering your budget or search text queries.</p>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                        {filteredProducts.map((p) => (
+                          <ProductCardItem key={p.id} product={p} onSelect={setSelectedProductId} onAdd={addToCart} onFav={toggleFav} wishlist={wishlist} />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* C. PRODUCT DETAIL SCREEN POPUP */}
+            {selectedProductId && selectedProduct && (
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-16">
+                <button onClick={() => setSelectedProductId(null)} className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-lavender-300">
+                  ← Back to Marketplace
+                </button>
+
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                  <div className="flex justify-center">
+                    <div className="w-full max-w-[420px] aspect-square rounded-[36px] bg-white/40 dark:bg-charcoal-900/40 border border-white/40 dark:border-charcoal-800/40 p-10 flex items-center justify-center shadow">
+                      <img src={selectedProduct.image} alt={selectedProduct.title} className="max-h-[300px] object-contain transition-transform duration-500 hover:scale-105" />
+                    </div>
+                  </div>
+
+                  <div className="space-y-6">
+                    <div className="space-y-1.5">
+                      <span className="text-[10px] font-bold text-lavender-300 uppercase tracking-widest">{selectedProduct.category}</span>
+                      <h1 className="font-poppins font-black text-3xl leading-snug">{selectedProduct.title}</h1>
+                      <div className="text-xs font-bold text-amber-400 flex items-center gap-1">★ {selectedProduct.rating.rate} <span className="text-gray-400 font-medium">({selectedProduct.rating.count} reviews)</span></div>
+                    </div>
+
+                    <p className="text-sm text-gray-400 dark:text-gray-300 leading-relaxed font-medium">{selectedProduct.description}</p>
+
+                    <div className="bg-cream-50 dark:bg-charcoal-800/30 border border-white/40 dark:border-charcoal-800/40 p-4 rounded-2xl inline-flex flex-col">
+                      <span className="text-[9px] uppercase font-bold text-gray-400 tracking-wider">Convenience store price</span>
+                      <span className="font-outfit font-extrabold text-2xl mt-1">${selectedProduct.price.toFixed(2)}</span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      {selectedProduct.flavors && (
+                        <div className="space-y-1.5">
+                          <label className="text-[9px] uppercase font-bold text-gray-400">Flavor Choice</label>
+                          <select 
+                            value={detailFlavor || selectedProduct.flavors[0]} onChange={(e) => setDetailFlavor(e.target.value)}
+                            className="w-full border border-cream-200 dark:border-charcoal-800 bg-white/50 dark:bg-charcoal-900/40 rounded-xl px-3 py-2.5 text-xs font-bold"
+                          >
+                            {selectedProduct.flavors.map(f => <option key={f} value={f}>{f}</option>)}
+                          </select>
+                        </div>
+                      )}
+                      {selectedProduct.sizes && (
+                        <div className="space-y-1.5">
+                          <label className="text-[9px] uppercase font-bold text-gray-400">Bundle package</label>
+                          <select 
+                            value={detailSize || selectedProduct.sizes[0]} onChange={(e) => setDetailSize(e.target.value)}
+                            className="w-full border border-cream-200 dark:border-charcoal-800 bg-white/50 dark:bg-charcoal-900/40 rounded-xl px-3 py-2.5 text-xs font-bold"
+                          >
+                            {selectedProduct.sizes.map(s => <option key={s} value={s}>{s}</option>)}
+                          </select>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="flex gap-4 items-center pt-4 border-t border-cream-200 dark:border-charcoal-800">
+                      <div className="flex items-center space-x-1.5 border border-cream-200 dark:border-charcoal-800 rounded-2xl p-2.5">
+                        <button onClick={() => setDetailQty(Math.max(1, detailQty - 1))} className="p-1">➖</button>
+                        <span className="font-bold text-sm w-8 text-center">{detailQty}</span>
+                        <button onClick={() => setDetailQty(detailQty + 1)} className="p-1">➕</button>
+                      </div>
+
+                      <button 
+                        onClick={() => addToCart(selectedProduct, detailQty, detailSize, detailFlavor)}
+                        className="flex-grow py-4 bg-lavender-200 hover:bg-lavender-300 text-charcoal-900 font-bold font-poppins text-xs uppercase tracking-wider rounded-2xl transition-all"
+                      >
+                        Add to shopping basket
+                      </button>
+
+                      <button onClick={() => toggleFav(selectedProduct)} className="p-4 border border-cream-300 dark:border-charcoal-800 rounded-2xl">
+                        {wishlist.some(i => i.id === selectedProduct.id) ? '❤️' : '🤍'}
+                      </button>
+                    </div>
+
+                    {/* Collapsible details */}
+                    <div className="pt-4 space-y-2">
+                      <div className="flex border-b border-cream-200 text-xs font-bold uppercase tracking-wider">
+                        <button onClick={() => setDetailTab('ingredients')} className={`pb-2 mr-6 ${detailTab === 'ingredients' ? 'border-b-2 border-lavender-200' : 'text-gray-400'}`}>Ingredients</button>
+                        <button onClick={() => setDetailTab('calories')} className={`pb-2 ${detailTab === 'calories' ? 'border-b-2 border-lavender-200' : 'text-gray-400'}`}>Calories</button>
+                      </div>
+                      <div className="py-2 text-xs text-gray-400 dark:text-gray-300 leading-relaxed font-outfit">
+                        {detailTab === 'ingredients' ? selectedProduct.ingredients : selectedProduct.calories}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* D. CHECKOUT SUMMARY PAGE */}
+            {view === 'cart' && !selectedProductId && (
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8">
+                <div>
+                  <h1 className="font-poppins font-black text-3xl">Review Checkout Basket</h1>
+                  <p className="text-xs text-gray-400 mt-1 uppercase tracking-wider font-semibold">Review your treats selections</p>
+                </div>
+
+                {cart.length === 0 ? (
+                  <div className="text-center py-20 space-y-6">
+                    <span className="text-6xl animate-bounce block">🧺</span>
+                    <h2 className="font-poppins font-bold text-xl">Your shopping basket is hungry!</h2>
+                    <button onClick={() => setView('market')} className="px-6 py-3 bg-lavender-200 text-charcoal-900 font-bold text-xs uppercase tracking-wider rounded-2xl font-poppins">Shop Korean Snacks</button>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div className="lg:col-span-2 space-y-4">
+                      <div className="glass-card p-6 rounded-3xl space-y-4">
+                        {cart.map((item, idx) => (
+                          <div key={idx} className="flex flex-col sm:flex-row items-center justify-between pb-4 border-b last:border-0 pt-4 first:pt-0 gap-4">
+                            <div className="flex items-center space-x-4">
+                              <img src={item.image} className="w-16 h-16 object-contain bg-cream-50 rounded-xl p-1" />
+                              <div>
+                                <h3 className="font-poppins font-bold text-sm leading-snug line-clamp-1 max-w-[200px]">{item.title}</h3>
+                                <p className="text-[10px] text-gray-400 mt-0.5">Flavor: {item.selectedFlavor} | Size: {item.selectedSize}</p>
+                                <span className="text-xs font-semibold text-lavender-300 block mt-1">${item.price.toFixed(2)} each</span>
+                              </div>
+                            </div>
+
+                            <div className="flex items-center gap-6">
+                              <div className="flex items-center space-x-1.5 border rounded-xl px-1.5 py-1">
+                                <button onClick={() => updateCartQty(item.id, item.selectedSize, item.selectedFlavor, item.quantity - 1)}>➖</button>
+                                <span className="text-xs font-bold w-6 text-center">{item.quantity}</span>
+                                <button onClick={() => updateCartQty(item.id, item.selectedSize, item.selectedFlavor, item.quantity + 1)}>➕</button>
+                              </div>
+                              <span className="font-extrabold text-sm w-20 text-right">${(item.price * item.quantity).toFixed(2)}</span>
+                              <button onClick={() => removeFromCart(item.id, item.selectedSize, item.selectedFlavor)} className="text-gray-400 hover:text-red-400">🗑️</button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="space-y-6">
+                      <div className="glass-card p-6 rounded-3xl space-y-6">
+                        <h2 className="font-poppins font-bold text-sm pb-2 border-b">Summary Breakdown</h2>
+                        <div className="space-y-3.5 text-xs font-semibold text-gray-400">
+                          <div className="flex justify-between"><span>Items Subtotal</span><span className="text-charcoal-800 dark:text-cream-100">${subtotal.toFixed(2)}</span></div>
+                          {discountAmount > 0 && <div className="flex justify-between text-emerald-600"><span>Applied Coupon discount</span><span>-${discountAmount.toFixed(2)}</span></div>}
+                          <div className="flex justify-between"><span>Shipping Fee</span><span className="text-charcoal-800 dark:text-cream-100">{isFreeShipping ? 'FREE' : `$${shippingCost.toFixed(2)}`}</span></div>
+                          <div className="pt-3 border-t text-base font-extrabold text-charcoal-800 dark:text-cream-50 flex justify-between"><span>Order Total</span><span>${totalAmount.toFixed(2)}</span></div>
+                        </div>
+
+                        <form onSubmit={applyCoupon} className="flex gap-2">
+                          <input 
+                            type="text" placeholder="Coupon Code (KFOOD10)" value={promoInput} onChange={(e) => setPromoInput(e.target.value)}
+                            className="w-full bg-cream-50/50 dark:bg-charcoal-800/40 border rounded-xl px-3 py-2 text-xs"
+                          />
+                          <button type="submit" className="px-4 py-2 bg-charcoal-800 dark:bg-cream-100 text-white dark:text-charcoal-900 font-bold rounded-xl text-[10px] uppercase font-poppins">Apply</button>
+                        </form>
+
+                        <button onClick={handleCheckout} className="w-full py-4 bg-lavender-200 text-charcoal-900 font-bold font-poppins text-xs uppercase tracking-wider rounded-2xl shadow transition-all">
+                          Place Order Checkout
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+          </main>
+
+          {/* Quick Sliding Cart Drawer Overlay */}
+          {cartOpen && (
+            <div className="fixed inset-0 z-50 flex justify-end">
+              <div onClick={() => setCartOpen(false)} className="absolute inset-0 bg-charcoal-900/40 backdrop-blur-xs transition-opacity" />
+              <div className="relative w-full sm:w-[420px] bg-white dark:bg-charcoal-900 h-full flex flex-col justify-between p-6 shadow-2xl animate-[slideInRight_0.3s_ease-out]">
+                <div>
+                  <div className="flex justify-between items-center pb-4 border-b">
+                    <h2 className="font-poppins font-bold text-base">Shopping Basket ({cartItemCount})</h2>
+                    <button onClick={() => setCartOpen(false)} className="text-xl">✕</button>
+                  </div>
+
+                  <div className="py-4 space-y-4 max-h-[60vh] overflow-y-auto pr-1 mt-2">
+                    {cart.length > 0 && (
+                      <div className="bg-cream-50 dark:bg-charcoal-800/30 p-4 rounded-xl border mb-4">
+                        <div className="text-xs font-semibold mb-1 flex justify-between text-gray-400">
+                          <span>{isFreeShipping ? "🎉 Free Shipping unlocked!" : `Buy $${(30 - subtotal).toFixed(2)} more for free shipping`}</span>
+                        </div>
+                        <div className="w-full bg-cream-200 dark:bg-charcoal-800 h-2 rounded-full overflow-hidden">
+                          <div className="bg-lavender-200 h-full transition-all duration-300" style={{ width: `${shippingProgress}%` }} />
+                        </div>
+                      </div>
+                    )}
+
+                    {cart.length === 0 ? (
+                      <div className="text-center py-10 text-gray-400">Your basket is empty.</div>
+                    ) : (
+                      cart.map((item, idx) => (
+                        <div key={idx} className="flex gap-4 pb-3 border-b last:border-0">
+                          <img src={item.image} className="w-12 h-12 object-contain bg-cream-50 rounded" />
+                          <div className="flex-grow">
+                            <h4 className="text-xs font-bold text-charcoal-800 dark:text-cream-50 line-clamp-1">{item.title}</h4>
+                            <p className="text-[9px] text-gray-400">{item.selectedFlavor} / {item.selectedSize}</p>
+                            <div className="flex justify-between items-center mt-1">
+                              <span className="text-xs font-extrabold">${(item.price * item.quantity).toFixed(2)}</span>
+                              <div className="flex items-center space-x-1 border rounded px-1 py-0.5">
+                                <button onClick={() => updateCartQty(item.id, item.selectedSize, item.selectedFlavor, item.quantity - 1)}>➖</button>
+                                <span className="text-xs font-semibold w-4 text-center">{item.quantity}</span>
+                                <button onClick={() => updateCartQty(item.id, item.selectedSize, item.selectedFlavor, item.quantity + 1)}>➕</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </div>
+
+                {cart.length > 0 && (
+                  <div className="border-t pt-4 space-y-4">
+                    <div className="flex justify-between text-base font-extrabold">
+                      <span>Subtotal amount</span>
+                      <span>${subtotal.toFixed(2)}</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <button onClick={() => { setCartOpen(false); setView('cart'); }} className="py-3 border rounded-xl text-xs font-bold uppercase font-poppins">View Cart</button>
+                      <button onClick={handleCheckout} className="py-3 bg-lavender-200 text-charcoal-900 font-bold rounded-xl text-xs uppercase font-poppins">Checkout</button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Toast Notification Container */}
+          <div className="fixed bottom-6 right-6 z-[999999] flex flex-col space-y-2.5 pointer-events-none">
+            {toasts.map((t) => (
+              <div key={t.id} className="pointer-events-auto flex items-center justify-between p-4 rounded-2xl border backdrop-blur-md shadow-lg w-72 bg-lavender-50 dark:bg-charcoal-900 border-lavender-200/50 text-charcoal-800 dark:text-cream-100 text-xs font-semibold">
+                <span>{t.msg}</span>
+                <button onClick={() => setToasts(prev => prev.filter(toast => toast.id !== t.id))} className="ml-3 font-bold">✕</button>
+              </div>
+            ))}
+          </div>
+
+          {/* Footer banner */}
+          <footer className="bg-white/80 dark:bg-charcoal-900 border-t border-cream-200 dark:border-charcoal-800/60 pt-12 pb-8 mt-20">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center sm:text-left space-y-8">
+              <div className="flex flex-col sm:flex-row justify-between items-center gap-6">
+                <div>
+                  <h3 className="font-poppins font-black text-xl flex items-center gap-1"><span className="bg-lavender-100 text-charcoal-900 px-2 py-0.5 rounded-xl">하루</span> Haru Mart</h3>
+                  <p className="text-xs text-gray-400 mt-1 max-w-sm leading-relaxed">Seoul convenience imports boutique storefront.</p>
+                </div>
+                <div className="text-xs text-gray-400 space-y-1 sm:text-right font-medium">
+                  <p>Myeongdong Convenience Store HQ, Seoul, South Korea</p>
+                  <p>support@haruharumart.kr | Open 24/7</p>
+                </div>
+              </div>
+              <div className="border-t pt-6 text-center text-xs text-gray-400 flex flex-col sm:flex-row justify-between items-center gap-2">
+                <p>© {new Date().getFullYear()} Haru Mart. All rights reserved.</p>
+                <p>Crafted with ❤️ for premium portfolios</p>
+              </div>
+            </div>
+          </footer>
+
+        </div>
+      );
+    }
+
+    // Single item cards
+    function ProductCardItem({ product, onSelect, onAdd, onFav, wishlist }) {
+      const isFav = wishlist.some(i => i.id === product.id);
+      return (
+        <div className="group relative bg-white/50 dark:bg-charcoal-900/40 backdrop-blur-sm border border-white/40 dark:border-charcoal-800/40 rounded-3xl p-4 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex flex-col justify-between h-full">
+          <div onClick={() => onSelect(product.id)} className="block relative w-full aspect-square overflow-hidden rounded-2xl bg-cream-50 dark:bg-charcoal-800/30 mb-4 cursor-pointer">
+            <img src={product.image} className="w-full h-full object-contain p-4 transition-transform duration-500 group-hover:scale-105" />
+            {product.badge && <span className="absolute top-3 left-3 px-2.5 py-0.5 rounded-full text-[9px] font-bold font-poppins uppercase tracking-wider bg-lavender-100 text-charcoal-900 shadow-sm">{product.badge}</span>}
+            <button 
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); onFav(product); }}
+              className="absolute top-3 right-3 p-2 rounded-full bg-white/90 dark:bg-charcoal-900/90 shadow transition-transform hover:scale-110"
+            >
+              {isFav ? '❤️' : '🤍'}
+            </button>
+          </div>
+          <div className="flex-grow flex flex-col justify-between">
+            <div>
+              <span className="text-[9px] font-bold text-lavender-300 uppercase tracking-widest block mb-0.5">{product.category}</span>
+              <h3 onClick={() => onSelect(product.id)} className="font-poppins font-bold text-sm text-charcoal-800 dark:text-cream-50 hover:text-lavender-300 transition-colors line-clamp-2 leading-snug cursor-pointer mb-2">{product.title}</h3>
+            </div>
+            <div>
+              <div className="text-[10px] font-bold text-amber-400 flex items-center gap-1 mb-2">★ {product.rating.rate} <span className="text-gray-400 font-medium">({product.rating.count})</span></div>
+              <div className="flex justify-between items-center pt-2 border-t border-cream-200">
+                <div className="flex flex-col">
+                  <span className="text-[9px] uppercase tracking-wider text-gray-400 font-semibold">Price</span>
+                  <span className="font-outfit font-extrabold text-base text-charcoal-800 dark:text-cream-50">${product.price.toFixed(2)}</span>
+                </div>
+                <button onClick={() => onAdd(product, 1)} className="p-2 bg-lavender-200 hover:bg-lavender-300 text-charcoal-900 rounded-xl transition-all shadow-sm">
+                  Add 👜
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    const container = document.getElementById('root');
+    const root = ReactDOM.createRoot(container);
+    root.render(<App />);
+  </script>
+</body>
+</html>
