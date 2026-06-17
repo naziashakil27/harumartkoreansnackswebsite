@@ -183,7 +183,7 @@
   <div id="root"></div>
 
   <!-- Standalone React script -->
-  <script type="text/babel">
+  <script id="app-script" type="text/plain">
     const { useState, useEffect, useRef } = React;
 
     // Hardcode Korean snacks inventory data (using relative paths for standard local running)
@@ -1117,5 +1117,14 @@
     const root = ReactDOM.createRoot(container);
     root.render(<App />);
   </script>
+  <script>
+    // Compile inline JSX with classic runtime to avoid browser import errors.
+    const appSource = document.getElementById('app-script').textContent;
+    const compiled = Babel.transform(appSource, {
+      presets: [['react', { runtime: 'classic' }]]
+    }).code;
+    new Function(compiled)();
+  </script>
 </body>
 </html>
+
