@@ -1,6 +1,6 @@
 # 🍙 Haru Mart (하루 마트) | Premium Korean Packaged Food Store
 
-[![Live Demo](https://img.shields.io/badge/Demo-Live%20Website-FF69B4?style=for-the-badge&logo=vercel)](https://harumartkoreansnackswebsite.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/Demo-Live%20Website-FF69B4?style=for-the-badge&logo=vercel)](https://harumartkoreansnackswebsite-lime.vercel.app/)
 [![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-purple?style=for-the-badge&logo=github)](https://github.com/naziashakil27/harumartkoreansnackswebsite)
 
 An immersive, highly animated, and beautifully designed single-page Korean convenience store storefront. Browse popular snacks, instant ramyuns, nostalgia-filled drinks, and organic pantry items curated directly from Seoul.
