@@ -75,5 +75,5 @@ npm run dev
 
 ## 🌐 Live Deployments
 
-- **Live URL:** [https://harumartkoreansnackswebsite.vercel.app/](https://harumartkoreansnackswebsite.vercel.app/)
+- **Live URL:** [https://harumartkoreansnackswebsite-lime.vercel.app/](https://harumartkoreansnackswebsite-lime.vercel.app/)
 - **GitHub Repository:** [https://github.com/naziashakil27/harumartkoreansnackswebsite](https://github.com/naziashakil27/harumartkoreansnackswebsite)
